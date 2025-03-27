@@ -1,6 +1,6 @@
 # PDBlend, a 2D Peridynamic Solver
 
-This repository contains code for simulating a three-point bending test under monotonic loading conditions using a blended-Peridynamics modeling.
+This repository contains a Peridynamic solver for simulating failure and fracture processes in two-dimensional solid domains. The code implements a blended-Peridynamics approach that efficiently captures crack initiation and propagation mechanisms. As a demonstration, the provided input files are configured to simulate a three-point bending test of a concrete beam under monotonic loading conditions.
 
 ## Project Structure
 

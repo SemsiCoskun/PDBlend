@@ -1,4 +1,4 @@
-# Three-Point Bending Test Simulation
+# PDBlend, a 2D Peridynamic Solver
 
 This repository contains code for simulating a three-point bending test under monotonic loading conditions using a blended-Peridynamics modeling.
 

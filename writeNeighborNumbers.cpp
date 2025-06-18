@@ -9,7 +9,6 @@ void writeNeighborNumbers
 {
     std::vector<int> neighborNumbers(xCoord.size());
 
-    #pragma omp parallel for schedule(static)
     for (size_t nodeI = 0; nodeI < xCoord.size(); ++nodeI) 
     {
         neighborNumbers[nodeI] = neighborList[nodeI].size();

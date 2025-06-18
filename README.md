@@ -12,7 +12,7 @@ The project is organized into the following directories:
 
 ## Prerequisites
 
-- C++11 compatible compiler (g++ or clang++)
+- C++11 compatible compiler (g++ is preferred)
 - Linux/macOS environment (for bash script)
 
 ## Installation
@@ -26,35 +26,14 @@ cd PDBlend
 
 ## How to Run
 
-### Option 1: Using the Automated Script
-
 1. Make the script executable:
    ```bash
-   chmod +x run.sh
+   g++ -std=c++11 -Wall *.cpp -o PDBlend_Solver -fopenmp
    ```
 
 2. Run the script:
    ```bash
-   ./run.sh
-   ```
-
-3. When prompted, enter the correct directory names or press Enter to use the defaults.
-
-### Option 2: Manual Execution
-
-1. Compile and run the input creator:
-   ```bash
-   cd [input-creator-directory]
-   g++ -std=c++11 -Wall *.cpp -o main
-   ./main
-   ```
-
-2. Copy the global constants file and compile/run the solver:
-   ```bash
-   cd ../[solver-directory]
-   cp ../[io-directory]/input/globalConstants.h ./globalConstants.h
-   g++ -std=c++11 -Wall *.cpp -o main
-   ./main
+   ./PDBlend_Solver
    ```
 
 ## Understanding the Code

@@ -105,3 +105,11 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 For questions, feedback, or collaboration inquiries, please contact:
 - Email: semsicoskun@gmail.com
 - GitHub: [SemsiCoskun](https://github.com/SemsiCoskun
+
+## References
+
+- Semsi Coskun and Davood Damircheli and Robert Lipton. "PDBlend: A Blended Peridynamics Solver for Fracture Simulation." arXiv preprint arXiv:2503.20109, 2025. https://arxiv.org/abs/2503.20109
+- Silling, S., 2000. Reformulation of elasticity theory for discontinuities and long-range forces. Journal of the Mechanics and Physics of Solids 48, 175–209. doi:https://doi.org/10.1016/S0022-5096(99)00029-0.
+- Underwood, P., 1983. Dynamic relaxation, in: Computational Methods in Mechanics, Vol 1: Computational methods for transient analysis. Elsevier Science Publishers B.V., pp. 245–265.
+- D. Littlewood. Roadmap for software implementation. In Handbook of peridynamic modeling, pages 147–178. Chapman and Hall/CRC, 2016.
+- Silling, S.A., Askari, E., 2005. A meshfree method based on the peridynamic model of solid mechanics. Computers & structures 83, 1526–1535. doi:https://doi.org/10.1016/j.compstruc.2004.11.026.

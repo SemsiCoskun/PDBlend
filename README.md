@@ -2,18 +2,11 @@
 
 This repository contains a Peridynamic solver for simulating failure and fracture processes in two-dimensional solid domains. The code implements a blended-Peridynamics approach that efficiently captures crack initiation and propagation mechanisms. As a demonstration, the provided input files are configured to simulate a three-point bending test of a concrete beam under monotonic loading conditions.
 
-## Project Structure
-
-The project is organized into the following directories:
-
-- **Input Creator**: Creates the input files required for the simulation
-- **Solver**: Contains the main simulation code that processes the inputs and produces results
-- **IO**: Contains input and output folders for data exchange between the modules
 
 ## Prerequisites
 
 - C++11 compatible compiler (g++ is preferred)
-- Linux/macOS environment (for bash script)
+- Linux/macOS environment
 
 ## Installation
 
@@ -30,23 +23,53 @@ cd PDBlend
    ```bash
    g++ -std=c++11 -Wall *.cpp -o PDBlend_Solver -fopenmp
    ```
+   - ```g++```:The C++ compiler.
+   - ```-std=c++11```: Ensures compilation with C++11 standard features.
+   - ```-Wall```: Enables all warning messages (recommended for robust code).
+   - ```*.cpp```: Compiles all ```.cpp``` source files in the current directory.
+   - ```-o PDBlend_Solver```: Specifies the output executable name as ```PDBlend_Solver```.
+   - ```-fopenmp```: Crucial for enabling OpenMP parallelization in the solver.
 
-2. Run the script:
+3. Run the script:
    ```bash
    ./PDBlend_Solver
    ```
 
+   The simulation will execute, process the inputs, and generate results.
+
 ## Understanding the Code
 
-The simulation workflow consists of two main steps:
+The simulation workflow in PDBlend conceptually involves setting up the problem (mesh, boundaries, loading) and then executing the peridynamic time-stepping solver. All necessary functionalities for both are co-located in the single codebase.
 
-1. **Input Creation**: Generates necessary input files including material properties, geometry, loading conditions, and global constants.
+The solver's core functionality is encapsulated in several key C++ header files, each responsible for a specific part of the peridynamic simulation. This includes functions for problem setup and simulation execution:
 
-2. **Solver Execution**: Processes the inputs to simulate the three-point bending test and produces results.
+- ```geometricalFeatures.h```: Provides utility functions and definitions related to geometrical calculations, used by other modules like ```createMesh.h``` and ```createBoundary.h```.
+- ```ZonesBoundary.h```: Defines structures or classes for specifying boundary zones.
+- ```ZonesCrackLines.h```: Defines structures or classes for specifying pre-existing crack lines.
+- ```ZonesExclusion.h```: Defines structures or classes for specifying regions to be excluded from the mesh or neighbor searches.
+- ```createMesh.h```: Generates the discretization (mesh) of the simulation domain, defining nodal coordinates based on ```geometricalFeatures.h``` and potentially considering ```ZonesExclusion.h``` for excluded regions.
+-  ```createNeighbors.h```: Establishes the neighbor list for each node within its peridynamic horizon, crucial for bond definition and interaction. This includes handling ```ZonesCrackLines.h``` and ```ZonesExclusion.h```.
+- ```createBoundary.h```: Defines and applies boundary conditions (fixed or assigned displacements, velocities, and forces) to the simulation domain, utilizing ```ZonesBoundary.h``` and ```geometricalFeatures.h``` for defining boundary regions.
+- ```createLoading.h```: Manages the application of external loads over the simulation's loading steps.
+- ```calculateDamage.h```: Manages the calculation of local damage accumulation and identifies newly broken bonds within the material.
+- ```calculateDisplacement.h```: Computes nodal displacements, velocities, and accelerations based on internal and external forces, incorporating bond health degradation. The half-step time integration algorithm is utilized.
+- ```calculateDt.h```: Determines the stable time step (```dt```) for the dynamic simulation based on material properties and discretization.
+- ```calculateEffectiveHorizonArea.h```: Calculates the effective area of interaction for each node within its peridynamic horizon.
+- ```calculatePartialAreas.h```: Computes partial areas, likely used in peridynamic force calculations or influence functions.
+- ```degradate.h```: Implements the bond degradation law, determining the health of bonds based on critical bond strains (linear and bilinear models).
 
-## Output
+  
+**Simulation Workflow**
+  The simulation proceeds by first setting up the geometric domain, mesh, and boundary conditions, then iteratively calculating the dynamic response:
 
-The simulation results are stored in the `3-IO/output` directory (or your custom IO output directory).
+1. **Mesh Generation:** The domain is discretized into a set of nodes and their initial coordinates are defined (```createMesh```). This can include defining zones for exclusion.
+2. **Neighbor Determination:** For each node, its neighbors within a defined horizon are identified, forming the "bonds" of the peridynamic model (```createNeighbors```). Pre-existing crack lines can influence bond creation.
+3. **Boundary and Loading Application:** Boundary conditions (fixed nodes, applied displacements/velocities/forces) are established (```createBoundary```), and the external loading schedule is set up (```createLoading```).
+4. **Iterative Solver:** The core simulation loop then begins, where at each time step:
+   - Internal forces are calculated based on bond deformations and material properties.
+   - Damage is assessed and bonds can degrade or break (```calculateDamage```, ```degradate```).
+   - Nodal accelerations, velocities, and displacements are updated (```calculateDisplacement```).
+5. **Output:** Relevant simulation data (e.g., displacements, damage) is periodically written to output files. 
 
 ## Contributing
 
